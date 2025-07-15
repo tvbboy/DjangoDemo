@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>应用编程实践</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: 400px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    label {
+        display: block;
+        margin-top: 15px;
+        color: #666;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select,
+    input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #007BFF;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    option {
+        background-color: white;
+        color: black;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>注册新账户</h1>
+    <form action="/reg_do/" method="post">
+        {% csrf_token %} 
+         <!--csrf 全称是 Cross Site Request Forgery。这是 Django 提供的防止伪装提交请求的功能。POST 方法提交的表格，必须有此标签。-->
+        <label for="username">用户名:</label>
+        <input type="text" id="username" name="username" placeholder="用户名" required>
+
+        <label for="email">邮箱地址:</label>
+        <input type="email" id="email" name="email" placeholder="邮箱地址" required>
+
+        <label for="password">密码:</label>
+        <input type="password" id="password" name="password" placeholder="请输入密码" required>
+
+        <label for="confirm_password">确认密码:</label>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="请再次输入密码" required>
+
+        <label for="gender">性别:</label>
+        <select id="gender" name="gender" required>
+            <option value="">请选择</option>
+            <option value="male">男</option>
+            <option value="female">女</option>
+            <option value="other">其他</option>
+        </select>
+
+        <label for="birthdate">出生日期:</label>
+        <input type="date" id="birthdate" name="birthdate" required>
+
+        <label for="nativePlace">籍贯:</label>
+        <select id="nativePlace" name="nativePlace" required>
+            <option value="">请选择</option>
+            <option value="Beijing">北京</option>
+            <option value="Shanghai">上海</option>
+            <option value="Guangdong">广东</option>
+            <!-- 添加更多省份或地区 -->
+        </select>
+
+        <button type="submit">注册</button>
+    </form>
+</div>
+</body>
+</html>

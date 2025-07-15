@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎 | 科技风用户信息</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --secondary: #7e00ff;
+            --dark: #0a0a1a;
+            --darker: #050510;
+            --light: #e0f7ff;
+            --glow: 0 0 10px var(--primary), 0 0 20px rgba(0, 247, 255, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            font-family: 'Exo 2', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 247, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(126, 0, 255, 0.05) 0%, transparent 20%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .card {
+            background: rgba(15, 15, 35, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--glow);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--primary), 0 0 40px rgba(0, 247, 255, 0.3);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 247, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            z-index: -1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            grid-column: 1 / -1;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--glow);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(224, 247, 255, 0.7);
+            letter-spacing: 1px;
+        }
+        
+        .username-display {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 247, 255, 0.3);
+            box-shadow: inset 0 0 15px rgba(0, 247, 255, 0.2);
+            text-shadow: 0 0 10px var(--primary);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+        }
+        
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            font-size: 1.5rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-item {
+            background: rgba(0, 15, 30, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 247, 255, 0.1);
+        }
+        
+        .info-label {
+            font-size: 0.9rem;
+            color: rgba(224, 247, 255, 0.6);
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 15px;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(224, 247, 255, 0.7);
+        }
+        
+        .activity-list {
+            list-style: none;
+        }
+        
+        .activity-item {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 247, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 247, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .activity-time {
+            font-size: 0.9rem;
+            color: rgba(224, 247, 255, 0.6);
+        }
+        
+        .footer {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 247, 255, 0.2);
+            color: rgba(224, 247, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            box-shadow: 0 0 10px var(--primary);
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+        
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 247, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 247, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            to { transform: translateY(-100px) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态网格线背景 -->
+    <div class="grid-lines"></div>
+    
+    <!-- 动态粒子背景 -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- 扫描线效果 -->
+    <div class="scan-line"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>用户信息中心</h1>
+            <div class="subtitle">欢迎访问您的个性化科技空间</div>
+        </div>
+        
+        <div class="card">
+            <div class="username-display">
+                <!-- Django模板变量：显示用户名 -->
+                {{ username }}
+            </div>
+            
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">247</div>
+                    <div class="stat-label">访问次数</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">89%</div>
+                    <div class="stat-label">完成度</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">成就点数</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-user-circle"></i> 个人信息</h2>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">会员等级</div>
+                    <div class="info-value">高级会员</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">加入时间</div>
+                    <div class="info-value"> {{ dteDate }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">账户状态</div>
+                    <div class="info-value">活跃 <i class="fas fa-check-circle" style="color: #00ff88;"></i></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">安全等级</div>
+                    <div class="info-value">高 <i class="fas fa-shield-alt" style="color: var(--primary);"></i></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-chart-line"></i> 数据统计</h2>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">本月活跃度</div>
+                    <div class="info-value">92% <i class="fas fa-arrow-up" style="color: #00ff88;"></i></div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">资源使用</div>
+                    <div class="info-value">65%</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">任务完成率</div>
+                    <div class="info-value">87%</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">社区贡献</div>
+                    <div class="info-value">34</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-history"></i> 最近活动</h2>
+            
+            <ul class="activity-list">
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">更新了个人资料</div>
+                        <div class="activity-time">2小时前</div>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">获得了新成就</div>
+                        <div class="activity-time">昨天</div>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-file-download"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">下载了资源包</div>
+                        <div class="activity-time">2023-07-12</div>
+                    </div>
+                </li>
+                <li class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-comment-alt"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">发表了新评论</div>
+                        <div class="activity-time">2023-07-10</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 科技用户中心 | 为未来而设计</p>
+            <p>系统状态: <span style="color: #00ff88;">运行正常</span> | 最后更新: 2023-07-15</p>
+        </div>
+    </div>
+    
+    <script>
+        // 创建动态粒子效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // 随机大小和位置
+                const size = Math.random() * 5 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                
+                // 随机动画时长
+                const duration = Math.random() * 20 + 10;
+                particle.style.animation = `float ${duration}s linear infinite`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>

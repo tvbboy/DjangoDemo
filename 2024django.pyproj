@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1bbd35a6-3a5e-405e-893e-50892ffb26c9}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>mysite\manage.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>CondaEnv|CondaEnv|env</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="mysite\manage.py" />
+    <Compile Include="mysite\mysite\asgi.py" />
+    <Compile Include="mysite\mysite\settings.py" />
+    <Compile Include="mysite\mysite\urls.py" />
+    <Compile Include="mysite\mysite\userView.py" />
+    <Compile Include="mysite\mysite\views.py" />
+    <Compile Include="mysite\mysite\wsgi.py" />
+    <Compile Include="mysite\mysite\__init__.py" />
+    <Compile Include="mysite\userModel\admin.py" />
+    <Compile Include="mysite\userModel\apps.py" />
+    <Compile Include="mysite\userModel\migrations\0001_initial.py" />
+    <Compile Include="mysite\userModel\migrations\0002_rename_birthday_reguser_birthdate.py" />
+    <Compile Include="mysite\userModel\migrations\0003_alter_reguser_gender_alter_reguser_password.py" />
+    <Compile Include="mysite\userModel\migrations\0004_reguser_logintimes.py" />
+    <Compile Include="mysite\userModel\migrations\0005_reguser_qq.py" />
+    <Compile Include="mysite\userModel\migrations\0006_alter_reguser_logintimes_alter_reguser_qq.py" />
+    <Compile Include="mysite\userModel\migrations\__init__.py" />
+    <Compile Include="mysite\userModel\models.py" />
+    <Compile Include="mysite\userModel\tests.py" />
+    <Compile Include="mysite\userModel\views.py" />
+    <Compile Include="mysite\userModel\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="mysite\templates\getPara.html" />
+    <Content Include="mysite\templates\login.html" />
+    <Content Include="mysite\templates\mybooks.html" />
+    <Content Include="mysite\templates\myfavors.html" />
+    <Content Include="mysite\templates\myfilters.html" />
+    <Content Include="mysite\templates\myname.html" />
+    <Content Include="mysite\templates\reg.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="mysite" />
+    <Folder Include="mysite\mysite" />
+    <Folder Include="mysite\templates" />
+    <Folder Include="mysite\userModel" />
+    <Folder Include="mysite\userModel\migrations" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="CondaEnv|CondaEnv|env" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>

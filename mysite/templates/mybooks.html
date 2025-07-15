@@ -1,0 +1,30 @@
+<table>
+    <tr bgcolor='red'>
+        <td>编号</td>
+        <td>标题</td>
+    </tr>
+{% for i in books %}
+    {% if forloop.counter|divisibleby:"2" %}
+    <tr bgcolor='yellow'>
+    {% else %}
+    <tr bgcolor='green'>
+    {% endif %}
+  
+    <td>{{ forloop.counter }}</td>
+    <td>{{ i }}</td>
+</tr>
+{% endfor %}
+</table>
+
+
+
+
+{%if num > 90 and num <= 100 %}
+优秀
+{% elif num > 60 and num <= 90 %}
+合格
+{% else %}
+一边玩去～
+{% endif %}
+
+
