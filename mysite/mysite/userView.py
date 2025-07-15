@@ -11,6 +11,8 @@ from datetime import datetime
 # 接收请求数据
 def reg(request): 
     return render(request, "reg.html")
+def register(request): 
+    return render(request, "register.html")
 # 接收请求数据
 def login(request): 
     return render(request, "login.html")
@@ -111,5 +113,24 @@ def reg_do(request):
         
         # test1 = regUser(username=ctx['username'])
         # test1.save()
-        
-        
+# 接收请求数据
+#用来教学演示POST提交，不会真实提交到数据库
+def reg_withoutdatabase(request):  
+    request.encoding='utf-8'
+    ctx ={} #空的字典
+    if request.POST:
+        ctx['username'] = request.POST['username']  #request.POST['XXXXXX'],XXXXXX为表单的id属性值
+        ctx['email'] = request.POST['email']
+        encrypted_password = make_password(request.POST['password'])
+        ctx['password'] = encrypted_password
+        #ctx['password'] = request.POST['password']
+        ctx['gender'] = request.POST['gender']
+        ctx['birthdate'] = request.POST['birthdate']
+        ctx['nativePlace'] = request.POST['nativePlace']
+        ctx['regdate'] = datetime.now()
+        strSQL="insert into tblUser(username,email,password,gender,birthdate,nativePlace)values(\
+        '%s','%s','%s','%s','%s','%s')"%(ctx['username'],ctx['email'],ctx['password'],\
+                                         ctx['gender'],ctx['birthdate'],ctx['nativePlace']
+        )   
+        return HttpResponse("<p>用户注册成功！"+strSQL+"</p>")
+      

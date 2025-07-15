@@ -28,7 +28,10 @@ urlpatterns = [
     path("mybooks/", views.mybooks, name="mybooks"),
     path("getpara/", views.getpara, name="getpara"),
     path("reg/", userView.reg, name="reg"),
+    path("register/", userView.register, name="register"),
     path("reg_do/", userView.reg_do, name="reg_do"),
+    path("reg_withoutdatabase/", userView.reg_withoutdatabase, name="reg_withoutdatabase"),
+    
     path("login/", userView.login, name="login"),
     path("login_do/", userView.login_do, name="login_do"),
     path("login_do1/", userView.login_do1, name="login_do1"),

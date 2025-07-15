@@ -70,8 +70,9 @@
 <body>
 <div class="container">
     <h1>注册新账户</h1>
-    <form action="/reg_do/" method="post">
-        {% csrf_token %} 
+    <form action="/reg_withoutdatabase/" method="post">
+    <!--<form action="/reg_do/" method="post">-->
+         {% csrf_token %} 
          <!--csrf 全称是 Cross Site Request Forgery。这是 Django 提供的防止伪装提交请求的功能。POST 方法提交的表格，必须有此标签。-->
         <label for="username">用户名:</label>
         <input type="text" id="username" name="username" placeholder="用户名" required>

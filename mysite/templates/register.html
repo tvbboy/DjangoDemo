@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+     <!~ 此页面是DEEPSEEK大模型生成于2025年7月15日生成，请勿修改！
+      提示词：生成一个科技风的炫酷用户注册页面，注册字段除了常用的字段之外，还必须包括出生日期、性别、学历，籍贯，民族。该网页会投放到Django的模板中去使用
+    ~-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>未来科技 - 用户注册</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c1027, #1a1f4b);
+            color: #e0e0ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 粒子背景 */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .left-panel {
+            flex: 1;
+            padding-right: 3rem;
+            animation: fadeInLeft 1s ease-out;
+        }
+
+        .right-panel {
+            flex: 1;
+            background: rgba(10, 15, 35, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 0 30px rgba(0, 195, 255, 0.2);
+            border: 1px solid rgba(0, 195, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInRight 1s ease-out;
+        }
+
+        .right-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 195, 255, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            animation: rotate 20s linear infinite;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            color: #00c3ff;
+            margin-right: 1rem;
+            text-shadow: 0 0 15px rgba(0, 195, 255, 0.7);
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00c3ff, #00ffea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slogan {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+            text-shadow: 0 0 10px rgba(0, 195, 255, 0.5);
+        }
+
+        .features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .features li {
+            padding: 0.8rem 0;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        .features i {
+            color: #00ffea;
+            margin-right: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tech-item {
+            background: rgba(0, 195, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 195, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 195, 255, 0.3);
+        }
+
+        .tech-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #00ffea;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            background: linear-gradient(90deg, #00c3ff, #00ffea);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .form-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #00c3ff, #00ffea);
+            margin: 0.5rem auto;
+            border-radius: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #a0a0ff;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(10, 20, 40, 0.5);
+            border: 1px solid rgba(0, 195, 255, 0.3);
+            border-radius: 8px;
+            color: #e0e0ff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00ffea;
+            box-shadow: 0 0 10px rgba(0, 255, 234, 0.3);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .checkbox-group input {
+            margin-right: 0.8rem;
+            width: 18px;
+            height: 18px;
+            accent-color: #00c3ff;
+        }
+
+        .checkbox-group label {
+            color: #a0a0ff;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-group a {
+            color: #00ffea;
+            text-decoration: none;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(90deg, #00c3ff, #00ffea);
+            border: none;
+            border-radius: 8px;
+            color: #0c1027;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 195, 255, 0.4);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #a0a0ff;
+        }
+
+        .login-link a {
+            color: #00ffea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .left-panel {
+                padding-right: 0;
+                margin-bottom: 3rem;
+                text-align: center;
+            }
+            
+            .features li {
+                justify-content: center;
+            }
+            
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .right-panel {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
+    
+    <div class="container">
+        <!-- 左侧介绍面板 -->
+        <div class="left-panel">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <div class="logo-text">TECHNOVA</div>
+            </div>
+            
+            <h1 class="slogan">加入未来科技社区，开启数字新纪元</h1>
+            
+            <ul class="features">
+                <li>
+                    <i class="fas fa-shield-alt"></i>
+                    <span>高级加密技术保护您的隐私安全</span>
+                </li>
+                <li>
+                    <i class="fas fa-bolt"></i>
+                    <span>极速响应体验，无缝交互设计</span>
+                </li>
+                <li>
+                    <i class="fas fa-globe"></i>
+                    <span>全球节点部署，随时随地访问</span>
+                </li>
+                <li>
+                    <i class="fas fa-robot"></i>
+                    <span>人工智能驱动，个性化体验</span>
+                </li>
+            </ul>
+            
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div>量子计算</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div>神经网络</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div>区块链</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div>边缘计算</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="fas fa-vr-cardboard"></i>
+                    </div>
+                    <div>虚拟现实</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">
+                        <i class="fas fa-satellite"></i>
+                    </div>
+                    <div>卫星通信</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧注册面板 -->
+        <div class="right-panel">
+            <h2 class="form-title">创建您的账户</h2>
+            
+            <form action="{% url 'register' %}" method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> 用户名</label>
+                    <input type="text" id="username" name="username" placeholder="输入唯一用户名" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> 电子邮箱</label>
+                    <input type="email" id="email" name="email" placeholder="输入您的电子邮箱" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> 密码</label>
+                        <input type="password" id="password" name="password" placeholder="创建安全密码" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm_password"><i class="fas fa-lock"></i> 确认密码</label>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="再次输入密码" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthdate"><i class="fas fa-birthday-cake"></i> 出生日期</label>
+                    <input type="date" id="birthdate" name="birthdate" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gender"><i class="fas fa-venus-mars"></i> 性别</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">选择性别</option>
+                            <option value="M">男</option>
+                            <option value="F">女</option>
+                            <option value="O">其他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="education"><i class="fas fa-graduation-cap"></i> 学历</label>
+                        <select id="education" name="education" required>
+                            <option value="">选择学历</option>
+                            <option value="highschool">高中及以下</option>
+                            <option value="college">大专</option>
+                            <option value="bachelor">本科</option>
+                            <option value="master">硕士</option>
+                            <option value="phd">博士及以上</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hometown"><i class="fas fa-map-marker-alt"></i> 籍贯</label>
+                        <select id="hometown" name="hometown" required>
+                            <option value="">选择籍贯</option>
+                            <option value="beijing">北京市</option>
+                            <option value="tianjin">天津市</option>
+                            <option value="shanghai">上海市</option>
+                            <option value="chongqing">重庆市</option>
+                            <option value="hebei">河北省</option>
+                            <option value="shanxi">山西省</option>
+                            <option value="liaoning">辽宁省</option>
+                            <option value="jilin">吉林省</option>
+                            <option value="heilongjiang">黑龙江省</option>
+                            <option value="jiangsu">江苏省</option>
+                            <option value="zhejiang">浙江省</option>
+                            <option value="anhui">安徽省</option>
+                            <option value="fujian">福建省</option>
+                            <option value="jiangxi">江西省</option>
+                            <option value="shandong">山东省</option>
+                            <option value="henan">河南省</option>
+                            <option value="hubei">湖北省</option>
+                            <option value="hunan">湖南省</option>
+                            <option value="guangdong">广东省</option>
+                            <option value="hainan">海南省</option>
+                            <option value="sichuan">四川省</option>
+                            <option value="guizhou">贵州省</option>
+                            <option value="yunnan">云南省</option>
+                            <option value="shanxi2">陕西省</option>
+                            <option value="gansu">甘肃省</option>
+                            <option value="qinghai">青海省</option>
+                            <option value="taiwan">台湾省</option>
+                            <option value="neimenggu">内蒙古自治区</option>
+                            <option value="guangxi">广西壮族自治区</option>
+                            <option value="xizang">西藏自治区</option>
+                            <option value="ningxia">宁夏回族自治区</option>
+                            <option value="xinjiang">新疆维吾尔自治区</option>
+                            <option value="hongkong">香港特别行政区</option>
+                            <option value="macau">澳门特别行政区</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ethnicity"><i class="fas fa-users"></i> 民族</label>
+                        <select id="ethnicity" name="ethnicity" required>
+                            <option value="">选择民族</option>
+                            <option value="han">汉族</option>
+                            <option value="zhuang">壮族</option>
+                            <option value="manchu">满族</option>
+                            <option value="hui">回族</option>
+                            <option value="miao">苗族</option>
+                            <option value="uighur">维吾尔族</option>
+                            <option value="yi">彝族</option>
+                            <option value="tujia">土家族</option>
+                            <option value="mongol">蒙古族</option>
+                            <option value="tibetan">藏族</option>
+                            <option value="buyei">布依族</option>
+                            <option value="dong">侗族</option>
+                            <option value="yao">瑶族</option>
+                            <option value="korean">朝鲜族</option>
+                            <option value="bai">白族</option>
+                            <option value="hani">哈尼族</option>
+                            <option value="li">黎族</option>
+                            <option value="kazakh">哈萨克族</option>
+                            <option value="dai">傣族</option>
+                            <option value="she">畲族</option>
+                            <option value="other">其他民族</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">我同意 <a href="#">服务条款</a> 和 <a href="#">隐私政策</a></label>
+                </div>
+                
+                <button type="submit" class="submit-btn">注册账户</button>
+                
+                <div class="login-link">
+                    已有账户？ <a href="{% url 'login' %}">立即登录</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 粒子背景脚本 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // 粒子背景配置
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00c3ff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00c3ff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                },
+                modes: {
+                    grab: { distance: 140, line_linked: { opacity: 0.5 } },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+        
+        // 表单验证
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('两次输入的密码不一致，请重新输入！');
+                document.getElementById('password').value = '';
+                document.getElementById('confirm_password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+    </script>
+</body>
+</html>
