@@ -1,7 +1,8 @@
 from django.db import models
+
 # Create your models here.
-class regUser(models.Model):
-    logintimes = models.IntegerField(default=0,null=False)
+class testForTeaching(models.Model):
+    logintimes = models.IntegerField(default=0)
     username = models.CharField(max_length=20)
     qq = models.CharField(max_length=20,null=True)
     email= models.EmailField()

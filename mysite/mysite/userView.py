@@ -87,33 +87,7 @@ def login_do1(request):
                 print(f"Password check failed: {e}")
                 msg="<p>密码验证失败！</p>"+strSql+msg
     return HttpResponse(msg) 
- # 接收请求数据
-def reg_do(request):  
-    request.encoding='utf-8'
-    ctx ={}
-    if request.POST:
-        ctx['username'] = request.POST['username']
-        ctx['email'] = request.POST['email']
-        encrypted_password = make_password(request.POST['password'])
-        ctx['password'] = encrypted_password
-        #ctx['password'] = request.POST['password']
-        ctx['gender'] = request.POST['gender']
-        ctx['birthdate'] = request.POST['birthdate']
-        ctx['nativePlace'] = request.POST['nativePlace']
-        ctx['regdate'] = datetime.now()
-        regUser.objects.create(**ctx)
-        return render(request, "login.html")
-        #return HttpResponse("<p>用户注册成功！</p>")
-        strSQL="insert into tblUser(username,email,password,gender,birthdate,nativePlace)values(\
-        '%s','%s','%s','%s','%s','%s')"%(ctx['username'],ctx['email'],ctx['password'],\
-                                         ctx['gender'],ctx['birthdate'],ctx['nativePlace']
-        )   
-        #return render(request, "login.html", ctx)
-        #return HttpResponse(strSQL)
-        
-        # test1 = regUser(username=ctx['username'])
-        # test1.save()
-# 接收请求数据
+
 #用来教学演示POST提交，不会真实提交到数据库
 def reg_withoutdatabase(request):  
     request.encoding='utf-8'

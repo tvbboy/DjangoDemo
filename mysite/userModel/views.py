@@ -1,3 +1,145 @@
 from django.shortcuts import render
-
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.db import connection # 导入connection
+from django.db.models import Q
+from django.db.models import F
+from userModel.models import regUser
+from django.contrib.auth.hashers import make_password,check_password
+# 正确的导入方式
+from datetime import datetime
 # Create your views here.
+# 接收请求数据，以执行SQL地方式插入到数据库中
+def reg_withSQL(request):  
+    insert_sql,ctx=getInsertRegSQLAndDict(request)
+    if(insert_sql=="" or ctx=={}):
+        return HttpResponse("<p>用户注册失败！</p>")
+    try:
+        with connection.cursor() as cursor:
+            # cursor.execute(sql, params)
+            cursor.execute(insert_sql)
+        print("注册成功！") #控制台打印输出
+    except Exception as e:
+        print(f"插入失败: {e}")
+    return render(request, "login.html")
+    #return HttpResponse("<p>用户注册成功！</p>")
+    #用来教学演示POST提交，不会真实提交到数据库
+# 接收请求数据，以ORM的方式提交到数据库
+def reg_withORM(request): 
+   insert_sql,ctx=getInsertRegSQLAndDict(request)
+   
+   if(insert_sql=="" or ctx=={}):
+       return HttpResponse("<p>用户注册失败！</p>")
+   try:
+       regUser.objects.create(**ctx)
+       print("注册成功！") #控制台打印输出
+   except Exception as e:
+       print(f"插入失败: {e}")
+   return render(request, "login.html")
+   #return HttpResponse("<p>用户注册成功！</p>")
+def reg_withoutdatabase(request):  
+    insert_sql,ctx=getInsertRegSQLAndDict(request)
+    return HttpResponse("<p>用户注册成功！"+insert_sql+"</p>")
+# 根据用户请求生成SQL语句，并返回给用户
+def getInsertRegSQLAndDict(request):
+    request.encoding='utf-8'
+    ctx ={}
+    if request.POST:
+            ctx['username'] = request.POST['username']
+            ctx['email'] = request.POST['email']
+            encrypted_password = make_password(request.POST['password'])
+            ctx['password'] = encrypted_password
+            #ctx['password'] = request.POST['password']
+            ctx['gender'] = request.POST['gender']
+            ctx['birthdate'] = request.POST['birthdate']
+            ctx['nativePlace'] = request.POST['nativePlace']
+            ctx['regdate'] =datetime.now() 
+            ctx['logintimes'] =0
+            strSQL="insert into usermodel_reguser(username,email,password,gender,birthdate,nativePlace,regdate,logintimes)values('%s','%s','%s','%s','%s','%s','%s',%s)"%(
+                ctx['username'],ctx['email'],ctx['password'],ctx['gender'],
+                ctx['birthdate'],ctx['nativePlace'],ctx['regdate'] ,ctx['logintimes']
+            )   
+            print(strSQL)
+    else:
+         strSQL=""
+    return strSQL,ctx
+
+# 接收请求数据
+def reg(request): 
+    return render(request, "reg.html")
+def register(request): 
+    return render(request, "register.html")
+# 接收请求数据
+def login(request): 
+    return render(request, "login.html")
+# 以SQL的方式验证用户登录
+def login_withSQL(request):
+    request.encoding='utf-8'
+    msg="<p>请<a href='/userModel/register'>注册</a></p>"+"<p><a href='/login'>返回登录</a></p>"
+    ctx ={}  # 创建一个字典对象
+    if request.POST:
+        ctx['username'] = request.POST['username']
+        encrypted_password = make_password(request.POST['password'])
+        ctx['password'] = encrypted_password
+        strSql=""
+        try:
+            # 1. 获取用户记录（使用参数化查询防止SQL注入）
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT id, password, is_active FROM userModel_Reguser WHERE username = %s",
+                    (ctx['username'])
+                )
+                print("SELECT id, password, is_active FROM userModel_Reguser WHERE username = '"+ctx['username']+"'")
+                row = cursor.fetchone()  #注意此时的row是 tuple类型
+                print("返回行：",row) #控制台打印日志防止有问题
+                # 2. 用户不存在或未激活
+                if not row :  # row[2] = is_active
+                    msg="<p>用户名不存在！</p>"+strSql+msg
+                else:
+                    user_id, hashed_password, _ = row
+                    # 3. 安全验证密码（防止时序攻击）
+                    # 方法A：使用Django内置的check_password（推荐）
+                    if check_password(request.POST['password'], hashed_password):
+                            # 登录成功后的处理（如设置session）
+                        request.session['user_id'] = user_id
+                        msg="<p>登录成功！</p>"                
+                    else:
+                        msg="<p>密码验证失败！</p>"+strSql+msg
+        except Exception as e:
+                    # 记录错误日志
+                    print(f"异常: {e}")
+                   
+    return HttpResponse(msg) 
+def login_withORM(request):  
+    request.encoding='utf-8'
+    ctx ={}
+    if request.POST:
+        ctx['username'] = request.POST['username']       
+        try:
+            findUser = regUser.objects.filter(Q(username=ctx['username']))
+            if findUser:
+                hashed_password=F('password')
+                if check_password(request.POST['password'], hashed_password):
+                            # 登录成功后的处理（如设置session）
+                        request.session['user_id'] = F('user_id')
+                        # 更新所有对象的某个字段，例如增加1
+                        regUser.objects.update(logintimes=F('logintimes') + 99)            
+                        return HttpResponse("<p>登录成功！</p>")               
+                else:
+                        msg="<p>密码验证失败！</p>"
+                
+            else:
+                return HttpResponse("<p>用户名不存在！</p>")            
+        except Exception as e:
+                    # 记录错误日志
+                    print(f"异常: {e}")
+                                       
+    # 通过objects这个模型管理器的all()获得所有数据行，相当于SQL中的SELECT * FROM
+    #listTest = Test.objects.all()
+        
+    # filter相当于SQL中的WHERE，可设置条件过滤结果
+   
+    
+
+    # 获取单个对象
+    #response3 = regUser.objects.get(id=1) 

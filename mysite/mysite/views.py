@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 # 正确的导入方式
 from datetime import datetime
+# 掌握基本模板变量的语法
 def myname(request):
     context          = {}
     context["first_name"] = "pu"
@@ -10,6 +11,7 @@ def myname(request):
 def myfavors(request):
     views_list = ["篮球","排球","足球"]
     return render(request, "myfavors.html", {"views_list": views_list})
+# 掌握模板中过滤器的技巧
 def myfilters(request):
     context = {
         "views_str":"我的中国心",
@@ -20,12 +22,12 @@ def myfilters(request):
         "views_price2"        :1234.461
     }
     return render(request, "myfilters.html", context)
+# 掌握模板中循环的语法
 def mybooks(request):
-    books=["三国演义","红楼梦","水浒传","西游记","聊斋志异"];
+    books=["三国演义","红楼梦","水浒传","西游记","聊斋志异"]
     return render(request, "mybooks.html", {"books": books,"num": 88})
 def hello(request):
     return HttpResponse("Hello world ! ")
-
 def nick(request):
     return HttpResponse("tvbboy ")
  

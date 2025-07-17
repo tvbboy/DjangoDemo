@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "userModel"
+    "userModel",  #上课用的模块
+    "testModel"  #随堂给学生演示用的，可随时删除
 ]
 
 MIDDLEWARE = [
@@ -85,7 +86,7 @@ DATABASES = {
 
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "test2024", #数据库名称dbfordjango
+        "NAME": "stu", #数据库名称,需要先在数据库中创建Schema
         "USER": "stu", #可以使用root
         "PASSWORD": "123456",
         "HOST": "202.120.84.196", #localhost

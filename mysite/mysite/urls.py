@@ -16,25 +16,31 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from . import views
+from . import views as mysite_views
 from . import userView
+from userModel import views as userModel_views
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", views.hello, name="hello"),
-    path("nick/", views.nick, name="nick"),
-    path("myname/", views.myname, name="myname"),
-    path("myfavors/", views.myfavors, name="myfavors"),
-    path("myfilters/", views.myfilters, name="myfilters"),
-    path("mybooks/", views.mybooks, name="mybooks"),
-    path("getpara/", views.getpara, name="getpara"),
-    path("reg/", userView.reg, name="reg"),
-    path("register/", userView.register, name="register"),
-    path("reg_do/", userView.reg_do, name="reg_do"),
-    path("reg_withoutdatabase/", userView.reg_withoutdatabase, name="reg_withoutdatabase"),
+    path("", mysite_views.hello, name="hello"),
+    path("nick/", mysite_views.nick, name="nick"),
+    path("myname/", mysite_views.myname, name="myname"),
+    path("myfavors/", mysite_views.myfavors, name="myfavors"),
+    path("myfilters/", mysite_views.myfilters, name="myfilters"),
+    path("mybooks/", mysite_views.mybooks, name="mybooks"),
+    path("getpara/", mysite_views.getpara, name="getpara"),
+    path("user_profile/", mysite_views.user_profile, name="user_profile"),
+
     
-    path("login/", userView.login, name="login"),
-    path("login_do/", userView.login_do, name="login_do"),
-    path("login_do1/", userView.login_do1, name="login_do1"),
-    path("user_profile/", views.user_profile, name="user_profile"),
+   
+    
+    path("login/", userModel_views.login, name="login"),
+    path("login_withSQL/", userModel_views.login_withSQL, name="login_withSQL"),
+    path("login_withORM/", userModel_views.login_withORM, name="login_withORM"),
+    
+    path("reg/", userModel_views.reg, name="reg"),
+    path("register/", userModel_views.register, name="register"),    
+    path("reg_withoutdatabase/", userModel_views.reg_withoutdatabase, name="reg_withoutdatabase"),
+    path("reg_withORM/", userModel_views.reg_withORM, name="reg_withORM"),
+    path("reg_withSQL/", userModel_views.reg_withSQL, name="reg_withSQL"),
 ]
 
