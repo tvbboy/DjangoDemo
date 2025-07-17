@@ -104,7 +104,10 @@
             <h1>欢迎回来！</h1>
             <p>请登录继续。</p>
         </div>
-        
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    
         <form action="/login_withORM/" method="post">
         <!--<form action="/login_withSQL/" method="post">-->
             {% csrf_token %} 

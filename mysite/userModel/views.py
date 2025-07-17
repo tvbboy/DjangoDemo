@@ -11,7 +11,7 @@ from datetime import datetime
 # Create your views here.
 # 接收请求数据，以执行SQL地方式插入到数据库中
 def reg_withSQL(request):  
-    insert_sql,ctx=getInsertRegSQLAndDict(request)
+    insert_sql,ctx=getInsertRegSQLAndDict(request)  #赋值的解压缩
     if(insert_sql=="" or ctx=={}):
         return HttpResponse("<p>用户注册失败！</p>")
     try:
@@ -21,13 +21,13 @@ def reg_withSQL(request):
         print("注册成功！") #控制台打印输出
     except Exception as e:
         print(f"插入失败: {e}")
-    return render(request, "login.html")
+    return render(request, "login.html")  #web页面跳转
     #return HttpResponse("<p>用户注册成功！</p>")
     #用来教学演示POST提交，不会真实提交到数据库
 # 接收请求数据，以ORM的方式提交到数据库
 def reg_withORM(request): 
    insert_sql,ctx=getInsertRegSQLAndDict(request)
-   
+   print("do regwithORM.......")
    if(insert_sql=="" or ctx=={}):
        return HttpResponse("<p>用户注册失败！</p>")
    try:
@@ -59,7 +59,7 @@ def getInsertRegSQLAndDict(request):
                 ctx['username'],ctx['email'],ctx['password'],ctx['gender'],
                 ctx['birthdate'],ctx['nativePlace'],ctx['regdate'] ,ctx['logintimes']
             )   
-            print(strSQL)
+            print(strSQL) #控制台打印输出,这个不会在WEB页输出的！！！！！！！！
     else:
          strSQL=""
     return strSQL,ctx
@@ -110,7 +110,7 @@ def login_withSQL(request):
                     print(f"异常: {e}")
                    
     return HttpResponse(msg) 
-def login_withORM(request):  
+def login_withORMOLD(request):  
     request.encoding='utf-8'
     ctx ={}
     if request.POST:
@@ -143,3 +143,27 @@ def login_withORM(request):
 
     # 获取单个对象
     #response3 = regUser.objects.get(id=1) 
+
+def login_withORM(request):  
+   request.encoding='utf-8'
+   ctx ={}
+   if request.POST:
+      ctx['username'] = request.POST['username']         
+      ctx['password'] = request.POST['password']
+     # 1. 通过ORM获取用户
+      user = regUser.get_by_username(ctx['username'])
+      # 2. 验证用户存在且活跃
+      #if not user or not user.is_Active:
+      if not user :
+        return render(request, 'login.html', {'error': '用户不存在或已被禁用'})      
+        # 3. 验证密码（使用ORM模型方法）
+      if not check_password(ctx['password'],user.password):
+        return render(request, 'login.html', {'error': '密码不正确'})        
+        # 4. 更新最后登录时间
+      user.logintimes = user.logintimes+1000
+      user.lastlogin = datetime.now()
+      user.save(update_fields=['logintimes','lastlogin'])
+      print("login success")
+      return HttpResponse("<p>登录成功！</p>")               
+   else:
+      return render(request, 'login.html', {'error': '请不用使用爬虫！'})      

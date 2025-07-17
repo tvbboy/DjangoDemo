@@ -11,3 +11,10 @@ class regUser(models.Model):
     nativePlace= models.CharField(max_length=20)
     regdate= models.DateTimeField()
     is_Active = models.BooleanField(default=True,null=True)
+    lastlogin= models.DateTimeField()
+    @classmethod
+    def get_by_username(cls, username):
+        try:
+            return cls.objects.get(username=username)
+        except cls.DoesNotExist:
+            return None
