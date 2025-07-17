@@ -79,9 +79,6 @@ def login_withSQL(request):
     ctx ={}  # 创建一个字典对象
     if request.POST:
         ctx['username'] = request.POST['username']
-        encrypted_password = make_password(request.POST['password'])
-        ctx['password'] = encrypted_password
-        strSql=""
         try:
             # 1. 获取用户记录（使用参数化查询防止SQL注入）
             with connection.cursor() as cursor:
@@ -94,9 +91,9 @@ def login_withSQL(request):
                 print("返回行：",row) #控制台打印日志防止有问题
                 # 2. 用户不存在或未激活
                 if not row :  # row[2] = is_active
-                    msg="<p>用户名不存在！</p>"+strSql+msg
+                    msg="<p>用户名不存在！</p>"+msg
                 else:
-                    user_id, hashed_password, _ = row
+                    user_id, hashed_password, _ = row  #解压缩变量赋值
                     # 3. 安全验证密码（防止时序攻击）
                     # 方法A：使用Django内置的check_password（推荐）
                     if check_password(request.POST['password'], hashed_password):
@@ -104,65 +101,29 @@ def login_withSQL(request):
                         request.session['user_id'] = user_id
                         msg="<p>登录成功！</p>"                
                     else:
-                        msg="<p>密码验证失败！</p>"+strSql+msg
+                        msg="<p>密码验证失败！</p>"+msg
         except Exception as e:
                     # 记录错误日志
-                    print(f"异常: {e}")
-                   
+                    print(f"异常: {e}")                   
     return HttpResponse(msg) 
-def login_withORMOLD(request):  
-    request.encoding='utf-8'
-    ctx ={}
-    if request.POST:
-        ctx['username'] = request.POST['username']       
-        try:
-            findUser = regUser.objects.filter(Q(username=ctx['username']))
-            if findUser:
-                hashed_password=F('password')
-                if check_password(request.POST['password'], hashed_password):
-                            # 登录成功后的处理（如设置session）
-                        request.session['user_id'] = F('user_id')
-                        # 更新所有对象的某个字段，例如增加1
-                        regUser.objects.update(logintimes=F('logintimes') + 99)            
-                        return HttpResponse("<p>登录成功！</p>")               
-                else:
-                        msg="<p>密码验证失败！</p>"
-                
-            else:
-                return HttpResponse("<p>用户名不存在！</p>")            
-        except Exception as e:
-                    # 记录错误日志
-                    print(f"异常: {e}")
-                                       
-    # 通过objects这个模型管理器的all()获得所有数据行，相当于SQL中的SELECT * FROM
-    #listTest = Test.objects.all()
-        
-    # filter相当于SQL中的WHERE，可设置条件过滤结果
-   
-    
-
-    # 获取单个对象
-    #response3 = regUser.objects.get(id=1) 
-
 def login_withORM(request):  
    request.encoding='utf-8'
    ctx ={}
    if request.POST:
       ctx['username'] = request.POST['username']         
-      ctx['password'] = request.POST['password']
-     # 1. 通过ORM获取用户
-      user = regUser.get_by_username(ctx['username'])
+      # 1. 通过ORM获取用户
+      user = regUser.get_by_username(ctx['username'])  #user的类型是什么？ 答案：regUser的一个实例
       # 2. 验证用户存在且活跃
       #if not user or not user.is_Active:
       if not user :
         return render(request, 'login.html', {'error': '用户不存在或已被禁用'})      
         # 3. 验证密码（使用ORM模型方法）
-      if not check_password(ctx['password'],user.password):
+      if not check_password(request.POST['password'],user.password):
         return render(request, 'login.html', {'error': '密码不正确'})        
         # 4. 更新最后登录时间
-      user.logintimes = user.logintimes+1000
+      user.logintimes = user.logintimes+1234
       user.lastlogin = datetime.now()
-      user.save(update_fields=['logintimes','lastlogin'])
+      user.save(update_fields=['logintimes','lastlogin'])   #掌握ORM更新的方法
       print("login success")
       return HttpResponse("<p>登录成功！</p>")               
    else:
